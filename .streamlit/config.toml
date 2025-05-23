@@ -7,5 +7,3 @@ backgroundColor = '#A8D5BA' # Dark Blue
 secondaryBackgroundColor = '#6BBF8A' # Lighter Blue
 
 textColor = '#FFFFFF'
-
-font = 'Helvetica Neue'
