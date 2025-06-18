@@ -1,9 +1,9 @@
 [theme] # You have to add this line
 
-primaryColor = '#4B9B6E' # Bright Orange
+primaryColor = '#FFFFFF' # Bright Orange
 
-backgroundColor = '#A8D5BA' # Dark Blue
+backgroundColor = '#DAEAF1' # Dark Blue
 
-secondaryBackgroundColor = '#6BBF8A' # Lighter Blue
+secondaryBackgroundColor = 'FFE6E6' # Lighter Blue
 
-textColor = '#FFFFFF'
+# textColor = '#FFFFFF'
