@@ -3,8 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-make_sidebar()
-
 # ------------------- Styling -------------------
 st.markdown("""
     <style>

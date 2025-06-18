@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-make_sidebar()
-
 df_stunting = pd.read_csv("dataset/stunting.csv")
 df_wasting = pd.read_csv("dataset/wasting.csv")
 
