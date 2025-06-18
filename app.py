@@ -5,10 +5,10 @@ import joblib
 import matplotlib.pyplot as plt
 
 # --- Load model dan encoder ---
-model_stunting = joblib.load("model/cb_classifier_model_stunting.pkl")
-model_wasting = joblib.load("model/cb_classifier_model_wasting.pkl")
-label_encoder_stunting = joblib.load("model/stunting_label_encoder_gender.pkl")
-label_encoder_wasting = joblib.load("model/wasting_label_encoder_gender.pkl")
+model_stunting = joblib.load("mount/src/toddler-stunted/model/cb_classifier_model_stunting.pkl")
+model_wasting = joblib.load("mount/src/toddler-stunted/model/cb_classifier_model_wasting.pkl")
+label_encoder_stunting = joblib.load("mount/src/toddler-stunted/model/stunting_label_encoder_gender.pkl")
+label_encoder_wasting = joblib.load("mount/src/toddler-stunted/model/wasting_label_encoder_gender.pkl")
 
 # --- Konfigurasi halaman ---
 st.set_page_config(page_title="Klasifikasi Gizi Balita", page_icon="🤱🏻", layout="centered")
@@ -147,19 +147,3 @@ st.markdown(
     "<center><small>© 2025 Said Ali Nuryudha Hisbullah • Informatika UIN Jakarta</small></center>",
     unsafe_allow_html=True
 )
-
-def make_sidebar():
-    with st.sidebar:
-        st.image("https://cdn-icons-png.flaticon.com/512/4280/4280638.png", width=60)
-        st.markdown("### 📁 Navigasi")
-        
-        st.page_link("pages/Dashboard.py", label="Dashboard Status Gizi", icon="📝")
-        st.page_link("pages/Dataset.py", label="Dataset Terkait", icon="👤")
-        #st.page_link("pages/ltkm-institusi.py", label="LTKM Institusi", icon="🏢")
-        #st.page_link("pages/screening.py", label="Screening", icon="🩺")
-        #st.page_link("pages/search-kyc.py", label="Search KYC", icon="🔍")
-        #st.page_link("pages/search-transaction.py", label="Search Transaction", icon="💳")
-
-        st.write("---")
-        if st.button("🔄 Reset Aplikasi"):
-            st.rerun()
