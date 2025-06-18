@@ -5,10 +5,10 @@ import joblib
 import matplotlib.pyplot as plt
 
 # --- Load model dan encoder ---
-model_stunting = joblib.load("mount/src/toddler-stunted/model/cb_classifier_model_stunting.pkl")
-model_wasting = joblib.load("mount/src/toddler-stunted/model/cb_classifier_model_wasting.pkl")
-label_encoder_stunting = joblib.load("mount/src/toddler-stunted/model/stunting_label_encoder_gender.pkl")
-label_encoder_wasting = joblib.load("mount/src/toddler-stunted/model/wasting_label_encoder_gender.pkl")
+model_stunting = joblib.load("model/cb_classifier_model_stunting.pkl")
+model_wasting = joblib.load("model/cb_classifier_model_wasting.pkl")
+label_encoder_stunting = joblib.load("model/stunting_label_encoder_gender.pkl")
+label_encoder_wasting = joblib.load("model/wasting_label_encoder_gender.pkl")
 
 # --- Konfigurasi halaman ---
 st.set_page_config(page_title="Klasifikasi Gizi Balita", page_icon="🤱🏻", layout="centered")
