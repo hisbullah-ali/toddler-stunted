@@ -8,7 +8,20 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Klasifikasi Gizi Balita", page_icon="🤱🏻", layout="centered")
 
 def main():
-    # --- Konfigurasi halaman ---
+
+    # --- Inisialisasi Session State ---
+    def reset_all_inputs():
+        st.session_state["prediksi_selesai"] = False
+        st.session_state["Jenis Kelamin"] = "laki-laki"
+        st.session_state["Umur (bulan)"] = 0
+        st.session_state["Tinggi Badan (cm)"] = 0.0
+        st.session_state["Berat Badan (kg)"] = 0.0
+        st.rerun()
+
+    if "prediksi_selesai" not in st.session_state:
+        reset_all_inputs()
+
+    # --- Judul dan Penjelasan ---
     st.title("🔎 Klasifikasi Status Gizi Balita")
     st.markdown(
         """
@@ -16,36 +29,37 @@ def main():
         menggunakan model **CatBoost Classifier**.
         """
     )
-
-    # --- Load model dan encoder ---
-    model_stunting = joblib.load("model/cb_classifier_model_stunting.pkl")
-    model_wasting = joblib.load("model/cb_classifier_model_wasting.pkl")
-    label_encoder_stunting = joblib.load("model/stunting_label_encoder_gender.pkl")
-    label_encoder_wasting = joblib.load("model/wasting_label_encoder_gender.pkl")
-
-    # --- Input Data ---
     st.header("👶 Masukkan Data Balita")
+
+    # --- Input Form ---
     col1, col2, col3 = st.columns(3)
     with col1:
-        jenis_kelamin = st.selectbox("Jenis Kelamin", ["laki-laki", "perempuan"])
-        umur = st.number_input("Umur (bulan)", min_value=0, max_value=60, step=1)
-
+        jenis_kelamin = st.selectbox("Jenis Kelamin", ["laki-laki", "perempuan"], key="jenis_kelamin")
+        umur = st.number_input("Umur (bulan)", min_value=0, max_value=60, step=1, key="umur")
     with col2:
-        tinggi_badan = st.number_input("Tinggi Badan (cm)", min_value=0.0, max_value=150.0, step=0.1)
-
+        tinggi_badan = st.number_input("Tinggi Badan (cm)", min_value=0.0, max_value=150.0, step=0.1, key="tinggi")
     with col3:
-        berat_badan = st.number_input("Berat Badan (kg)", min_value=0.0, max_value=50.0, step=0.1)
+        berat_badan = st.number_input("Berat Badan (kg)", min_value=0.0, max_value=50.0, step=0.1, key="berat")
+
+    # --- Tombol ---
+    col_pred, col_reset = st.columns([1, 1])
+    with col_pred:
+        if st.button("🔍 Prediksi Status Gizi"):
+            st.session_state["prediksi_selesai"] = True
+    with col_reset:
+        if st.button("🔄 Reset"):
+            reset_all_inputs()
 
     # --- Prediksi ---
-    st.markdown("### 🔍 Hasil Prediksi")
-    if st.button("Prediksi Status Gizi"):
+    if st.session_state["prediksi_selesai"]:
 
-        # Encode jenis kelamin untuk kedua model
-        #encoded_gender_stunting = label_encoder_stunting.transform([jenis_kelamin])[0]
-        #encoded_gender_wasting = label_encoder_wasting.transform([jenis_kelamin])[0]
+        # Load model dan encoder
+        model_stunting = joblib.load("model/cb_classifier_model_stunting.pkl")
+        model_wasting = joblib.load("model/cb_classifier_model_wasting.pkl")
+        label_encoder_stunting = joblib.load("model/stunting_label_encoder_gender.pkl")
+        label_encoder_wasting = joblib.load("model/wasting_label_encoder_gender.pkl")
+
         jenis_kelamin_encoded = 1 if jenis_kelamin == 'laki-laki' else 0
-
-        # Buat dataframe input (asumsi fitur sama)
         df_input = pd.DataFrame([{
             "Umur (bulan)": umur,
             "Jenis Kelamin": jenis_kelamin_encoded,
@@ -54,19 +68,13 @@ def main():
         }])
 
         with st.spinner("Memproses prediksi..."):
-
-            # Prediksi stunting
             pred_stunting = model_stunting.predict(df_input)[0]
             label_stunting = label_encoder_stunting.inverse_transform([pred_stunting])[0]
-
-            # Prediksi wasting
-            df_input["Jenis Kelamin"] = jenis_kelamin_encoded
             pred_wasting = model_wasting.predict(df_input)[0]
             label_wasting = label_encoder_wasting.inverse_transform([pred_wasting])[0]
 
         # --- Output ---
         st.subheader("📌 Hasil Prediksi Status Gizi Balita:")
-
         label_s = label_stunting.lower()
         label_w = label_wasting.lower()
 
@@ -96,25 +104,21 @@ def main():
         else:
             st.write(f"ℹ️ {label_wasting}")
 
-        # --- Visualisasi Grafik Batang ---
+        # Grafik
         st.markdown("### 📉 Visualisasi Status Gizi")
-
         fig, ax = plt.subplots(figsize=(6, 3))
         statuses = ['Stunting', 'Wasting']
         predictions = [label_stunting, label_wasting]
         colors = ['skyblue', 'lightgreen']
-
         ax.bar(statuses, [1, 1], color=colors, edgecolor='black')
         for i, label in enumerate(predictions):
             ax.text(i, 1.05, label, ha='center', fontsize=12, fontweight='bold')
-
         ax.set_ylim(0, 1.3)
         ax.axis('off')
         st.pyplot(fig)
 
-        # --- Penjelasan Edukatif ---
+        # Edukasi
         st.markdown("### 📚 Penjelasan Status Gizi")
-
         st.markdown("#### 🧬 **Stunting**")
         if label_s in ["tinggi", "tall"]:
             st.markdown("- Pertumbuhan sangat baik. Balita memiliki tinggi badan di atas rata-rata untuk usianya.")
@@ -135,7 +139,7 @@ def main():
         elif label_w in ["sangat kurus", "severely underweight"]:
             st.markdown("- Kondisi sangat kurus. Segera konsultasikan ke petugas kesehatan.")
 
-        # --- Rekomendasi ---
+        # Rekomendasi
         st.markdown("### 🩺 Rekomendasi Umum")
         st.markdown("""
         - Pantau pertumbuhan balita secara rutin menggunakan buku KIA atau aplikasi kesehatan digital.
@@ -144,7 +148,7 @@ def main():
         - Jika hasil prediksi menunjukkan stunting atau wasting, segera **konsultasikan ke posyandu atau puskesmas terdekat**.
         """)
 
-    # --- Footer ---
+    # Footer
     st.markdown("---")
     st.markdown(
         "<center><small>© 2025 Said Ali Nuryudha Hisbullah • Informatika UIN Jakarta</small></center>",
