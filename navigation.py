@@ -5,7 +5,7 @@ def render_sidebar():
     st.sidebar.title("Navigasi Gizi Balita")
     selected_page = st.sidebar.radio(
         "Pilih halaman",
-        ["Home", "Dashboard", "Dataset"],
+        ["Home 1", "Dashboard", "Dataset", "Home 2"],
         index=0
     )
     st.sidebar.markdown("---")
