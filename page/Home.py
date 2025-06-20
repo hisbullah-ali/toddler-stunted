@@ -4,9 +4,6 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 
-#bar style chrome
-st.set_page_config(page_title="Klasifikasi Gizi Balita", page_icon="🤱🏻", layout="centered")
-
 def main():
 
     # --- Inisialisasi Session State ---
@@ -31,41 +28,46 @@ def main():
     )
     st.header("👶 Masukkan Data Balita")
 
-    # --- Input Form ---
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        jenis_kelamin = st.selectbox("Jenis Kelamin", ["laki-laki", "perempuan"], key="jenis_kelamin")
-        umur = st.number_input("Umur (bulan)", min_value=0, max_value=60, step=1, key="umur")
-    with col2:
-        tinggi_badan = st.number_input("Tinggi Badan (cm)", min_value=0.0, max_value=150.0, step=0.1, key="tinggi")
-    with col3:
-        berat_badan = st.number_input("Berat Badan (kg)", min_value=0.0, max_value=50.0, step=0.1, key="berat")
+    # --- FORM INPUT ---
+    with st.form("form_input_balita"):
+        jenis_kelamin = st.selectbox("Jenis Kelamin", ["laki-laki", "perempuan"])
+        umur = st.number_input("Umur (bulan)", min_value=0, max_value=60, step=1)
+        tinggi_badan = st.number_input("Tinggi Badan (cm)", min_value=0.0, max_value=150.0, step=0.1)
+        berat_badan = st.number_input("Berat Badan (kg)", min_value=0.0, max_value=50.0, step=0.1)
+        
+        # Tombol submit di dalam form
+        submitted = st.form_submit_button("🔍 Prediksi Status Gizi")
 
-    # --- Tombol ---
-    col_pred, col_reset = st.columns([1, 1])
-    with col_pred:
-        if st.button("🔍 Prediksi Status Gizi"):
-            st.session_state["prediksi_selesai"] = True
-    with col_reset:
-        if st.button("🔄 Reset"):
-            reset_all_inputs()
+    # Tombol reset di luar form
+    if st.button("🔄 Reset"):
+        reset_all_inputs()
+
+    # Jika tombol prediksi ditekan, simpan nilai ke session state
+    if submitted:
+        st.session_state["Jenis Kelamin"] = jenis_kelamin
+        st.session_state["Umur (bulan)"] = umur
+        st.session_state["Tinggi Badan (cm)"] = tinggi_badan
+        st.session_state["Berat Badan (kg)"] = berat_badan
+        st.session_state["prediksi_selesai"] = True
+
 
     # --- Prediksi ---
     if st.session_state["prediksi_selesai"]:
-
         # Load model dan encoder
         model_stunting = joblib.load("model/cb_classifier_model_stunting.pkl")
         model_wasting = joblib.load("model/cb_classifier_model_wasting.pkl")
         label_encoder_stunting = joblib.load("model/stunting_label_encoder_gender.pkl")
         label_encoder_wasting = joblib.load("model/wasting_label_encoder_gender.pkl")
 
-        jenis_kelamin_encoded = 1 if jenis_kelamin == 'laki-laki' else 0
+        jenis_kelamin_encoded = 1 if st.session_state["Jenis Kelamin"] == 'laki-laki' else 0
         df_input = pd.DataFrame([{
-            "Umur (bulan)": umur,
+            "Umur (bulan)": st.session_state["Umur (bulan)"],
             "Jenis Kelamin": jenis_kelamin_encoded,
-            "Tinggi Badan (cm)": tinggi_badan,
-            "Berat Badan (kg)": berat_badan
+            "Tinggi Badan (cm)": st.session_state["Tinggi Badan (cm)"],
+            "Berat Badan (kg)": st.session_state["Berat Badan (kg)"]
         }])
+
+
 
         with st.spinner("Memproses prediksi..."):
             pred_stunting = model_stunting.predict(df_input)[0]
