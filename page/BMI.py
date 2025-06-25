@@ -3,6 +3,7 @@ import pandas as pd
 
 bb_tb_ideal_male = pd.read_csv("dataset/bb_tb_ideal_male.csv")
 bb_tb_ideal_female = pd.read_csv("dataset/bb_tb_ideal_female.csv")
+url = "https://crystalsea.id/blog/tabel-berat-badan-anak/?srsltid=AfmBOor7kjU0v9fsEXVCs1iI19PBhC9sb7JHk9Sxg6_mr6KmnJchq0mb"
 
 def main():
     st.title("⚧️ BB & TB Ideal Balita")
@@ -19,6 +20,8 @@ def main():
     st.dataframe(bb_tb_ideal_female)
     st.caption("Tabel di atas menunjukkan berat badan dan tinggi badan ideal untuk balita perempuan berdasarkan usia dalam bulan. Data ini dapat digunakan sebagai referensi untuk memantau pertumbuhan anak.")
 
+    st.divider()
+    st.markdown(f"Untuk informasi lebih lanjut, kunjungi [sumber rujukan]({url}).") 
 
     # --- Footer ---
     st.markdown("---")
