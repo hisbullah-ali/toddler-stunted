@@ -9,6 +9,6 @@ def render_sidebar():
         index=0
     )
     st.sidebar.markdown("---")
-    st.sidebar.info("Aplikasi ini untuk mendeteksi **status gizi balita** berdasarkan data tinggi, umur, dan jenis kelamin.")
+    st.sidebar.info("Aplikasi ini untuk mengklasifikasikan **status gizi balita** berdasarkan data tinggi badan, berat badan, umur, dan jenis kelamin.")
 
     return selected_page
