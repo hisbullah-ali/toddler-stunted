@@ -4,7 +4,7 @@ from PIL import Image
 kecukupan_gizi = Image.open("assets/kecukupan_gizi.png")
 kandungan_nutrisi = Image.open("assets/kandungan_nutrisi.png")
 kecukupan_gizi_url = "https://stunting.go.id/kemenkes-permenkes-no-28-tahun-2019-angka-kecukupan-gizi-yang-dianjurkan/"
-rekomendasi_makanan = "https://repository.binawan.ac.id/3526/1/ASUHAN%20GIZI%20UNTUK%20BAYI%2C%20BALITA%2C%20DAN%20ANAK%20PRA%20SEKOLAH%20PANDUAN%20GIZI%20OPTIMAL%20MENGURANGI%20STUNTING%20%281%29.pdf"
+rekomendasi_makanan = "https://repository.binawan.ac.id/3526/"
 
 def main():
     st.title("🚼 Angka Kecukupan Gizi Balita")
