@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def main():
-    # ------------------- Styling -------------------
     st.markdown("""
         <style>
             .main { background-color: #eaf6ff; }
@@ -13,15 +12,12 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    # ------------------- Judul -------------------
     st.markdown("# 📊 Dashboard Status Gizi Balita")
     st.markdown("Silakan pilih status gizi yang ingin divisualisasikan: **Stunting** atau **Wasting**.")
 
-    # ------------------- Load Dataset -------------------
     df_stunting = pd.read_csv("dataset/stunting.csv")
     df_wasting = pd.read_csv("dataset/wasting.csv")
 
-    # ------------------- Warna Status Gizi -------------------
     colors_stunting = {
         'stunted': 'red',
         'severely stunted': 'purple',
@@ -36,7 +32,6 @@ def main():
         'normal': 'green'
     }
 
-    # ------------------- Pilihan Status Gizi -------------------
     pilihan = st.selectbox("Pilih Status Gizi:", ["Stunting", "Wasting"])
 
     st.markdown("""
@@ -47,7 +42,6 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    # ------------------- Fungsi Tampilkan Grafik -------------------
     def tampilkan_grafik_stunting(df):
         df_used = df.sample(n=1000, random_state=42) if len(df) > 1000 else df
 
@@ -169,13 +163,11 @@ def main():
             """)
 
 
-    # ------------------- Tampilkan Sesuai Pilihan -------------------
     if pilihan == "Stunting":
         tampilkan_grafik_stunting(df_stunting)
     else:
         tampilkan_grafik_wasting(df_wasting)
 
-    # --- Footer ---
     st.markdown("---")
     st.markdown(
         "<center><small>© 2025 Said Ali Nuryudha Hisbullah • Informatika UIN Jakarta</small></center>",
