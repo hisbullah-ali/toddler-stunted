@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 
+#inisialisasi gambar dan link
 kecukupan_gizi = Image.open("assets/kecukupan_gizi.png")
 kandungan_nutrisi = Image.open("assets/kandungan_nutrisi.png")
 kecukupan_gizi_url = "https://stunting.go.id/kemenkes-permenkes-no-28-tahun-2019-angka-kecukupan-gizi-yang-dianjurkan/"

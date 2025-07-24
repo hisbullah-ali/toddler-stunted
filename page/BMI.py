@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 
+#import data dan link  
 bb_tb_ideal_male = pd.read_csv("dataset/bb_tb_ideal_male.csv")
 bb_tb_ideal_female = pd.read_csv("dataset/bb_tb_ideal_female.csv")
 url = "https://crystalsea.id/blog/tabel-berat-badan-anak/?srsltid=AfmBOor7kjU0v9fsEXVCs1iI19PBhC9sb7JHk9Sxg6_mr6KmnJchq0mb"
