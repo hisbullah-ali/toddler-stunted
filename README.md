@@ -3,4 +3,4 @@ Repository ini berisi implementasi dan dokumentasi dari penelitian skripsi saya,
 
 ### Penelitian ini menggunakan metode CRISP-DM
 Berikut adalah detail dari tahapan-tahapan CRISP-DM pada penelitian saya:
-![Diagram Sistem](assets/kerangka_Berfikir.jpg)
+![Diagram Sistem](assets/Kerangka_Berfikir.png)
